@@ -20,6 +20,12 @@ class HomeScreen extends StatelessWidget {
         'date': '2025-05-28',
         'summary': '두 상태관리 라이브러리의 차이와 실제 사용법을 비교해보았습니다.'
       },
+      {
+        'title': '나는야 테디',
+        'author': '임동그니무니다',
+        'date': '2025-06-04',
+        'summary': '임동근 두둥 등장!'
+      },
     ];
 
     return Scaffold(
