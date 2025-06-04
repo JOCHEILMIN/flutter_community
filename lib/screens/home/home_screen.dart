@@ -16,6 +16,14 @@ class HomeScreen extends StatelessWidget {
     // … 필요하다면 더 추가
   ];
 
+  static const List<Color> backgroundColors = [
+    Color(0xFF1976D2), // 진한 보라 (Flutter)
+    Color(0xFF7B1FA2), // 보라 (Java)
+    Color(0xFF4A148C), // 파랑 (JavaScript)
+    Color(0xFF388E3C), // 초록 (React)
+    // 더 많은 카테고리가 있다면 여기 색을 추가하세요
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,11 +32,33 @@ class HomeScreen extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final cat = categories[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          // index에 따라 배경색을 순환해서 가져옵니다.
+          // (만약 카테고리가 backgroundColors보다 많으면 나머지 연산 %를 써서 재사용할 수도 있습니다)
+          final bgColor = backgroundColors[index % backgroundColors.length];
+
+          return Container(
+            // 높이를 고정하거나 padding을 주면 버튼처럼 보이게 할 수 있습니다.
+            height: 80,
+            margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+            decoration: BoxDecoration(
+              color: bgColor,
+              gradient: LinearGradient(
+                colors: [bgColor.withOpacity(0.8), bgColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             child: ListTile(
-              title: Text(cat.name, style: const TextStyle(fontSize: 18)),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              title: Text(
+                cat.name,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              // 오른쪽 화살표 아이콘도 흰색으로 통일
+              trailing: const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.white),
               onTap: () {
                 // 카테고리 id에 따라 각 화면으로 분기
                 switch (cat.id) {
@@ -57,7 +87,6 @@ class HomeScreen extends StatelessWidget {
                     );
                     break;
                   default:
-                  // 그 외의 카테고리가 생길 경우, 디폴트 동작
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('${cat.name} 화면이 준비되지 않았습니다.')),
                     );
