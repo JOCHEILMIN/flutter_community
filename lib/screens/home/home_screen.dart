@@ -7,97 +7,136 @@ import 'package:flutter_community/screens/category/category_javaScript.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  // 예시 카테고리 데이터
   final List<Category> categories = const [
     Category(id: 1, name: 'Flutter'),
     Category(id: 2, name: 'Java'),
     Category(id: 3, name: 'JavaScript'),
     Category(id: 4, name: 'React'),
-    // … 필요하다면 더 추가
+    Category(id: 5, name: 'Git'),
+    Category(id: 6, name: 'Docker'),
+    Category(id: 7, name: 'Kotlin'),
+    Category(id: 8, name: 'Swift'),
   ];
 
   static const List<Color> backgroundColors = [
-    Color(0xFF1976D2), // 진한 보라 (Flutter)
-    Color(0xFF7B1FA2), // 보라 (Java)
-    Color(0xFF4A148C), // 파랑 (JavaScript)
-    Color(0xFF388E3C), // 초록 (React)
-    // 더 많은 카테고리가 있다면 여기 색을 추가하세요
+    Color(0xFF1976D2), // Flutter
+    Color(0xFF388E3C), // Java (Spring)
+    Color(0xFFF7DF1E), // JavaScript
+    Color(0xFF40C4FF), // React
+    Color(0xFF303030), // Git
+    Color(0xFF0db7ed), // Docker
+    Color(0xFF7f52ff), // Kotlin
+    Color(0xFFffac45), // Swift
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('카테고리 선택')),
-      body: ListView.builder(
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final cat = categories[index];
-          // index에 따라 배경색을 순환해서 가져옵니다.
-          // (만약 카테고리가 backgroundColors보다 많으면 나머지 연산 %를 써서 재사용할 수도 있습니다)
-          final bgColor = backgroundColors[index % backgroundColors.length];
+    final chunked = _chunk(categories, 4);
 
-          return Container(
-            // 높이를 고정하거나 padding을 주면 버튼처럼 보이게 할 수 있습니다.
-            height: 80,
-            margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          '모두의 개발',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: false,
+      ),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(12),
+        itemCount: chunked.length,
+        separatorBuilder: (_, __) => Container(
+          margin: const EdgeInsets.symmetric(vertical: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Container(
+            height: 10,
             decoration: BoxDecoration(
-              color: bgColor,
-              gradient: LinearGradient(
-                colors: [bgColor.withOpacity(0.8), bgColor],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(0.5),
             ),
-            child: ListTile(
-              title: Text(
-                cat.name,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
+          ),
+        ),
+        itemBuilder: (context, sectionIndex) {
+          final group = chunked[sectionIndex];
+
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: group.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 1.2,
+            ),
+            itemBuilder: (context, index) {
+              final cat = group[index];
+              final bgColor = backgroundColors[categories.indexOf(cat) % backgroundColors.length];
+
+              return GestureDetector(
+                onTap: () {
+                  switch (cat.id) {
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CategoryFlutter()));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CategoryJava()));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CategoryJavaScript()));
+                      break;
+                    default:
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('${cat.name} 화면이 준비되지 않았습니다.')),
+                      );
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      colors: [bgColor.withOpacity(0.85), bgColor],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: bgColor.withOpacity(0.4),
+                        blurRadius: 6,
+                        offset: const Offset(2, 4),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      cat.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              // 오른쪽 화살표 아이콘도 흰색으로 통일
-              trailing: const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.white),
-              onTap: () {
-                // 카테고리 id에 따라 각 화면으로 분기
-                switch (cat.id) {
-                  case 1:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CategoryFlutter(),
-                      ),
-                    );
-                    break;
-                  case 2:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CategoryJava(),
-                      ),
-                    );
-                    break;
-                  case 3:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CategoryJavaScript(),
-                      ),
-                    );
-                    break;
-                  default:
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${cat.name} 화면이 준비되지 않았습니다.')),
-                    );
-                    break;
-                }
-              },
-            ),
+              );
+            },
           );
         },
       ),
     );
+  }
+
+  /// 4개씩 묶는 헬퍼
+  List<List<Category>> _chunk(List<Category> list, int size) {
+    List<List<Category>> chunks = [];
+    for (var i = 0; i < list.length; i += size) {
+      chunks.add(list.sublist(i, i + size > list.length ? list.length : i + size));
+    }
+    return chunks;
   }
 }
 
