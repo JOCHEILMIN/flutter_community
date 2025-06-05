@@ -8,26 +8,96 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   final List<Category> categories = const [
-    Category(id: 1, name: 'Flutter'),
-    Category(id: 2, name: 'Java'),
-    Category(id: 3, name: 'JavaScript'),
-    Category(id: 4, name: 'React'),
-    Category(id: 5, name: 'Git'),
-    Category(id: 6, name: 'Docker'),
-    Category(id: 7, name: 'Kotlin'),
-    Category(id: 8, name: 'Swift'),
+    Category(
+      id: 1,
+      name: 'Flutter',
+      color: Color(0xFF1976D2),
+      gradient: LinearGradient(
+        colors: [Color(0xFF1976D2), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 2,
+      name: 'Java',
+      color: Color(0xFF388E3C),
+      gradient: LinearGradient(
+        colors: [Color(0xFF388E3C), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 3,
+      name: 'JavaScript',
+      color: Color(0xFF4A148C),
+      gradient: LinearGradient(
+        colors: [Color(0xFF4A148C), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 4,
+      name: 'React',
+      color: Color(0xFF40C4FF),
+      gradient: LinearGradient(
+        colors: [Color(0xFF40C4FF), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 5,
+      name: 'Git',
+      color: Color(0xFF303030),
+      gradient: LinearGradient(
+        colors: [Color(0xFF303030), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 6,
+      name: 'Docker',
+      color: Color(0xFF0db7ed),
+      gradient: LinearGradient(
+        colors: [Color(0xFF0db7ed), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 7,
+      name: 'Kotlin',
+      color: Color(0xFF7f52ff),
+      gradient: LinearGradient(
+        colors: [Color(0xFF7f52ff), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    Category(
+      id: 8,
+      name: 'Swift',
+      color: Color(0xFFffac45),
+      gradient: LinearGradient(
+        colors: [Color(0xFFffac45), Colors.white],
+        stops: [0.5, 2.0],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
   ];
 
-  static const List<Color> backgroundColors = [
-    Color(0xFF1976D2), // Flutter
-    Color(0xFF388E3C), // Java (Spring)
-    Color(0xFFF7DF1E), // JavaScript
-    Color(0xFF40C4FF), // React
-    Color(0xFF303030), // Git
-    Color(0xFF0db7ed), // Docker
-    Color(0xFF7f52ff), // Kotlin
-    Color(0xFFffac45), // Swift
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +145,6 @@ class HomeScreen extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               final cat = group[index];
-              final bgColor = backgroundColors[categories.indexOf(cat) % backgroundColors.length];
 
               return GestureDetector(
                 onTap: () {
@@ -98,18 +167,8 @@ class HomeScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(
-                      colors: [bgColor.withOpacity(0.85), bgColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: bgColor.withOpacity(0.4),
-                        blurRadius: 6,
-                        offset: const Offset(2, 4),
-                      ),
-                    ],
+                    gradient: cat.gradient,
+                    color: cat.color,
                   ),
                   child: Center(
                     child: Text(
@@ -143,5 +202,13 @@ class HomeScreen extends StatelessWidget {
 class Category {
   final int id;
   final String name;
-  const Category({required this.id, required this.name});
+  final Color color;
+  final Gradient gradient;
+
+  const Category({
+    required this.id,
+    required this.name,
+    required this.color,
+    required this.gradient,
+  });
 }
